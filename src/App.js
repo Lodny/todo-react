@@ -1,10 +1,14 @@
 import "todomvc-app-css/index.css";
-import TodoList from "./containers/TodoList";
+import NewTodoContainer from "./containers/NewTodoContainer";
+import TodoListContainer from "./containers/TodoListContainer";
+import ControlContainer from "./containers/ControlContainer";
 
 function App() {
   return (
     <div className="todoapp">
-      <TodoList></TodoList>
+      <NewTodoContainer />
+      <TodoListContainer />
+      <ControlContainer />
     </div>
   );
 }

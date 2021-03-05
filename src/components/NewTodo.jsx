@@ -13,6 +13,7 @@ export default function NewTodo() {
       e.preventDefault();
       console.log("handleAddTodo() : ", newValue);
       store.dispatch({ type: "ADD", text: newValue });
+      setNewValue("");
     }
   };
 
