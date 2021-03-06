@@ -1,34 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import store from "../store";
 
-export default function TodoItem() {
-  // const [item, setItem] = useState("");
+export default function TodoItem({ todo }) {
+  const handleChange = (e) => {
+    console.log("TodoItem() : handleChange() : checked : ", e.target.checked);
+    store.dispatch({ type: "TOGGLE", id: todo.id });
+  };
 
-  // const handleChange = (e) => {
-  //   setNewValue(e.target.value);
-  // };
-
-  // const handleAddTodo = (e) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-  //     console.log("handleAddTodo() : ", newValue);
-  //     store.dispatch({ type: "ADD", text: newValue });
-  //     setNewValue("");
-  //   }
-  // };
+  const handleClick = () => {
+    console.log("TodoItem() : handleClick() : delete id : ", todo.id);
+    store.dispatch({ type: "DELETE", id: todo.id });
+  };
 
   return (
-    <li>
+    <li className={`${todo.done ? "completed" : ""}`}>
       <div className="view">
         <input
           type="checkbox"
           className="toggle"
-          // checked={todo.done}
-          // onChange={onDone}
+          checked={todo.done}
+          onChange={handleChange}
           autoFocus={true}
         />
-        <label>TodoItem</label>
-        <button className="destroy" />
+        <label>{todo.text}</label>
+        <button className="destroy" onClick={handleClick} />
       </div>
     </li>
   );

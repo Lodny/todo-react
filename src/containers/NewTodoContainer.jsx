@@ -1,22 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NewTodo from "../components/NewTodo";
 import store from "../store";
 
 export default function NewTodoContainer() {
-  // const [newValue, setNewValue] = useState("");
+  const [allChecked, setAllChecked] = useState(true);
 
-  // const handleChange = (e) => {
-  //   setNewValue(e.target.value);
-  // };
+  useEffect(() => {
+    store.subscribe(() => {
+      console.log(
+        "NewTodoContainer() : subscribe() : store.getState().allChecked : ",
+        store.getState().allChecked
+      );
 
-  // const handleAddTodo = (e) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-  //     console.log("handleAddTodo() : ", newValue);
-  //     store.dispatch({ type: "ADD", text: newValue });
-  //     setNewValue("");
-  //   }
-  // };
+      setAllChecked(store.getState().allChecked);
+    });
+  }, []);
+
+  const handleChange = (e) => {
+    console.log(
+      "NewTodoContainer() : handleChange() : checked : ",
+      e.target.checked
+    );
+
+    // e.preventDefault();
+    store.dispatch({ type: "TOGGLE-ALL" });
+  };
 
   return (
     <>
@@ -29,8 +37,8 @@ export default function NewTodoContainer() {
           id="toggle-all"
           type="checkbox"
           className="toggle-all"
-          // checked={allSelected}
-          // onChange={onToggleAll}
+          checked={allChecked}
+          onChange={handleChange}
         />
         <label htmlFor="toggle-all" />
       </section>

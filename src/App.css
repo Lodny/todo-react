@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+footer li {
+  /* border: solid 1px orange; */
+  padding: 2px 5px;
+  margin: 16px;
+  cursor: pointer;
+}
+
+footer li.selected {
+  border: solid 1px orange;
+}

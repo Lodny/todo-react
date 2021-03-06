@@ -1,50 +1,63 @@
-import React, { useState } from "react";
-// import store from "../store";
+import React, { useState, useEffect } from "react";
+import store from "../store";
 // import { NavLink } from "react-router-dom";
 
 export default function Control() {
-  // const [newValue, setNewValue] = useState("");
+  const [left, setLeft] = useState(0);
+  const [view, setView] = useState("All");
 
-  // const handleChange = (e) => {
-  //   setNewValue(e.target.value);
-  // };
+  const anyDone = store.getState().todos.length > left;
 
-  // const handleAddTodo = (e) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-  //     console.log("handleAddTodo() : ", newValue);
-  //     store.dispatch({ type: "ADD", text: newValue });
-  //     setNewValue("");
-  //   }
-  // };
+  useEffect(() => {
+    store.subscribe(() => {
+      const leftCnt = store.getState().todos.filter((todo) => !todo.done)
+        .length;
+      console.log("Control() : subscribe() : leftCnt : ", leftCnt);
+      setLeft(leftCnt);
+      setView(store.getState().view);
+    });
+  }, []);
+
+  const handleClick = (newView) => () => {
+    console.log("Control() : handleClick() : newView : ", newView);
+    store.dispatch({ type: "VIEW", view: newView });
+  };
+
+  const handleClearCompleted = () => {
+    console.log("Control() : handleClearCompleted() : anyDone : ", anyDone);
+    store.dispatch({ type: "CLEAR-COMPLETED" });
+  };
 
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>1</strong> items left
+        <strong>{left}</strong> items left
       </span>
       <ul className="filters">
-        <li>
-          {/* <NavLink exact={true} to="/" activeClassName="selected"> */}
+        <li
+          className={view === "All" ? "selected" : ""}
+          onClick={handleClick("All")}
+        >
           All
-          {/* </NavLink> */}
         </li>
-        <li>
-          {/* <NavLink to="/active" activeClassName="selected"> */}
+        <li
+          className={view === "Active" ? "selected" : ""}
+          onClick={handleClick("Active")}
+        >
           Active
-          {/* </NavLink> */}
         </li>
-        <li>
-          {/* <NavLink to="/completed" activeClassName="selected"> */}
+        <li
+          className={view === "Completed" ? "selected" : ""}
+          onClick={handleClick("Completed")}
+        >
           Completed
-          {/* </NavLink> */}
         </li>
       </ul>
-      {/* {anyDone && (
-          <button className="clear-completed" onClick={onClearCompleted}>
-            Clear completed
-          </button>
-        )} */}
+      {anyDone && (
+        <button className="clear-completed" onClick={handleClearCompleted}>
+          Clear completed
+        </button>
+      )}
     </footer>
   );
 }

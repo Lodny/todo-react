@@ -11,7 +11,6 @@ export default function NewTodo() {
   const handleAddTodo = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      console.log("handleAddTodo() : ", newValue);
       store.dispatch({ type: "ADD", text: newValue });
       setNewValue("");
     }
@@ -22,6 +21,7 @@ export default function NewTodo() {
       <input
         className="new-todo"
         placeholder="What needs to be done?"
+        autoFocus={true}
         value={newValue}
         onChange={handleChange}
         onKeyUp={handleAddTodo}
